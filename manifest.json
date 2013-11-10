@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+
+  "name": "KeyboardLeopard",
+  "description": "This extension allows users to implement simple word filters.",
+  "version": "0.0.1",
+
+  "permissions": [
+    "*://*/*"
+  ],
+  
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["keyboardleopard.js"]
+    }
+  ],
+  
+  "browser_action": {
+    "default_icon": {
+      "19": "keyboard-leopard.png",
+      "38": "keyboard-leopard@2x.png"
+    },
+    "default_name": "KeyboardLeopard",
+    "default_popup": "popup.html"
+  },
+  
+  "options_page": "options.html",
+}
