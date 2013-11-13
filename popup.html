@@ -4,6 +4,14 @@
     <meta charset="utf-8">
   </head>
   <body>
-    <p>Toggles will go here</p>
+    <table id="toggles">
+    </table>
+    <button id="optionslink">Go to options</button>
+    <script>
+      document.getElementById('optionslink').addEventListener('click',
+      function(){
+        chrome.tabs.create({url: "options/index.html"})
+      });
+    </script>
   </body>
 </html>

@@ -4,6 +4,32 @@
     <meta charset="utf-8">
   </head>
   <body>
-    <p>Options will go here</p>
+    <ul id="filters">
+    </ul>
+    <form>
+      <input id="word-in">
+      <input id="word-out">
+      <button id="newfilter">Add Filter</button>
+    </form>
+    <button id="save">Save</button>
+    <script>
+      var filters = [];
+      function addFilter(fil){
+        var li = document.createElement('li');
+        li.textContent = fil.inword + ' -> ' + fil.outword;
+        document.getElementById('filters').appendChild(li);
+        filters.push(fil);
+      }
+      function loadExistingFilters(){
+        var savedFilters = JSON.parse(localStorage.getItem('filters'));
+        filters.keys.forEach(function(key){
+          addFilter(savedFilters[key]);
+        });
+      }
+      loadExistingFilters();
+      document.getElementById('save').addEventListener('click', function(){
+        localStorage.setItem('filters',filters);
+      });
+    </script>
   </body>
 </html>
