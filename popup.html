@@ -6,12 +6,11 @@
   <body>
     <table id="toggles">
     </table>
-    <button id="optionslink">Go to options</button>
+    <button id="optionslink" type="button">Go to options</button>
     <script>
+      /*global chrome*/
       document.getElementById('optionslink').addEventListener('click',
-      function(){
-        chrome.tabs.create({url: "options/index.html"})
-      });
+        function(){chrome.tabs.create({url: "options.html"});});
     </script>
   </body>
 </html>
