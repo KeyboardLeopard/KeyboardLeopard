@@ -23,67 +23,66 @@ function loadFilters(){
 }
 
 function caseMatchSpan(source,base,output) {
-  return base == base.toLowerCase ? 
-  // If the span is expected to be all lower-case
-    source != source.toLowerCase && source == source.toUpperCase ?
-      output.toUpperCase : output
-    // Only capitalize the output if the source is entirely upper-case
-    : base == base.toUpperCase ?
-    // If the span is expected to be all upper-case
-      source != source.toUpperCase && source == source.toLowerCase ?
-        output.toLowerCase : output
-      // Only lowercase the output if the source is entirely lower-case
-    // Otherwise, if the input matches either full-case push,
-    // push the output to that case
-    : source != source.toLowerCase && source == source.toUpperCase ?
-      output.toUpperCase
-    : source != source.toUpperCase && source == source.toLowerCase ?
-      output.toLowerCase
+  // When the span has an entire case that doesn't match the entire case of
+  // the expected text, transform it to match
+  return source == source.toLowerCase() && source != source.toUpperCase() ?
+      base == base.toLowerCase() && base != base.toUpperCase() ? output :
+      output.toLowerCase()
+    : source == source.toUpperCase() && source != source.toLowerCase() ?
+      base == base.toUpperCase() && base != base.toLowerCase() ? output :
+      output.toUpperCase()
     : output;
 }
 
 // Slice against, for arrays or strings.
-function sliceAgainst(i, ars, other) {
+function sliceOf(ars, i, parts) {
   return ars.slice(
-    Math.floor(i/other.length*ars.length),
-    Math.floor((i+1)/other.length*ars.length));
+    Math.floor(i/parts*ars.length),
+    Math.floor((i+1)/parts*ars.length));
 }
 
+// NOTE: This function takes in strings of "words", which is wrong.
+// It's supposed to apply for each word in the output, according to the nearest
+// word in the input.
+// That said, it's good enough right now.
 function caseMatchWords(source, base, output) {
   //special case the first letter
   var result = caseMatchSpan(source[0],base[0],output[0]);
-  
+
   var sRest = source.slice(1);
   var bRest = base.slice(1);
   var oRest = output.slice(1);
 
-  for(var i = 0; i < Math.min(bRest.length,oRest.length); i++){
+  var parts = Math.min(bRest.length,oRest.length);
+
+  for(var i = 0; i < parts; i++){
     result += caseMatchSpan(
-      sliceAgainst(i, sRest, oRest),
-      sliceAgainst(i, bRest, oRest),
-      sliceAgainst(i, oRest, bRest));
+      sliceOf(sRest, i, parts),
+      sliceOf(bRest, i, parts),
+      sliceOf(oRest, i, parts));
   }
+
+  return result;
 }
 
 function replacement(match) {
   var filter = filters[match.toLowerCase()];
-  
+
   var inWords = filter.inword.split(' ');
   var outWords = filter.outword.split(' ');
   var matchWords = match.split(' ');
-  
-  var iwl = inWords.length;
-  var owl = outWords.length;
-  
+
   var replacementWords = [];
-  
-  for(var i = 0; i < Math.min(iwl,owl); i++){
+
+  var parts = Math.min(inWords.length,outWords.length);
+
+  for(var i = 0; i < parts; i++){
     replacementWords[i] = caseMatchWords(
-      sliceAgainst(i,matchWords,outWords),
-      sliceAgainst(i,inWords,outWords),
-      sliceAgainst(i,outWords,inWords));
+      sliceOf(matchWords, i, parts).join(' '),
+      sliceOf(inWords, i, parts).join(' '),
+      sliceOf(outWords, i, parts).join(' '));
   }
-  
+
   return replacementWords.join(' ');
 }
 
