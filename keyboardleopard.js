@@ -11,7 +11,7 @@ function escapeRegExp(str) {
 var filters;
 var allFilterRegexp;
 
-function loadFilters(){
+function loadFilters(cb){
   chrome.storage.sync.get('filters', function(res) {
     filters = res.filters;
     allFilterRegexp = new RegExp('('
@@ -22,6 +22,7 @@ function loadFilters(){
         .map(escapeRegExp)
         .join('|')
       + ')','gi');
+    cb && cb();
   });
 }
 
@@ -138,8 +139,9 @@ function cdm_listener(event) {
   }
 }
 
-loadFilters();
-changeTextNodes(document.body);
-document.title = performSubstitutions(document.title);
-document.body.addEventListener("DOMNodeInserted", insertion_listener, false);
-document.body.addEventListener("DOMCharacterDataModified", cdm_listener, false);
+loadFilters(function(){
+  changeTextNodes(document.body);
+  document.title = performSubstitutions(document.title);
+  document.body.addEventListener("DOMNodeInserted", insertion_listener, false);
+  document.body.addEventListener("DOMCharacterDataModified", cdm_listener, false);
+});
