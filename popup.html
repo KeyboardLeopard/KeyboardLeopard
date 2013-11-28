@@ -7,10 +7,6 @@
     <table id="toggles">
     </table>
     <button id="optionslink" type="button">Go to options</button>
-    <script>
-      /*global chrome*/
-      document.getElementById('optionslink').addEventListener('click',
-        function(){chrome.tabs.create({url: "options.html"});});
-    </script>
+    <script src="popup.js"></script>
   </body>
 </html>
