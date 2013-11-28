@@ -3,7 +3,7 @@ var filters = {};
 var filterList = [];
 function addFilter(fil){
   var li = document.createElement('li');
-  li.textContent = fil.inword + ' -> ' + fil.outword + ' ';
+  li.textContent = fil.inword + ' → ' + fil.outword + ' ';
 
   function deleteFilter(){
     document.getElementById('filters').removeChild(li);
