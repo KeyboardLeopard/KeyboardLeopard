@@ -93,10 +93,6 @@ function performSubstitutions(str) {
   return str.replace(allFilterRegexp, replacement);
 }
 
-// define the nodeType value for TEXT_NODEs (the kind we want to replace)
-// Some browsers may fail to make this value available - it's 3
-var TEXT_NODE = Node.TEXT_NODE || 3;
-
 // Semaphore to signal that we're replacing text, so that our changes don't
 // trigger recursive substitutions
 var replacingContent = false;
@@ -113,11 +109,14 @@ function replaceTextContent(node) {
 
 function changeTextNodes(node) {
   var length, childNodes;
-  //If this is a text node, attempt substitutions on it
-  if (node.nodeType == TEXT_NODE) {
+  // If this is a text node, attempt substitutions on it
+  if (node.nodeName == '#text') {
     replaceTextContent(node);
-  //If this is anything other than a text node, recurse any children
-  } else {
+  // If this is an ordinary content node, recurse any children
+  // ("ordinary" here means a node where text content doesn't have meaning
+  //  beyond human text - <style> and <script> are the only nodes of this type
+  //  that I know of)
+  } else if (node.nodeName != 'style' && node.nodeName != 'script') {
     childNodes = node.childNodes;
     length = childNodes.length;
     for(var i = 0; i < length; ++i){
