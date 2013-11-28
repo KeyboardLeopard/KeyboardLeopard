@@ -2,6 +2,8 @@
 // This work may be used freely as long as this notice is included.
 // The work is provided "as is" without warranty, express or implied.
 
+/* global chrome */
+
 function escapeRegExp(str) {
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
@@ -10,16 +12,18 @@ var filters;
 var allFilterRegexp;
 
 function loadFilters(){
-  filters = localStorage.getItem('filters');
-  allFilterRegexp = new RegExp('('
-    + filters.keys
-      .filter(function(fil){return fil.enabled})
-      .sort(function(m,n){
-        return m.length == n.length ? m < n : m.length > n.length})
-      .map(function(fil){return fil.inword})
-      .map(escapeRegExp)
-      .join('|')
-    + ')','gi');
+  chrome.storage.sync.get('filters', function(res) {
+    filters = res.filters;
+    allFilterRegexp = new RegExp('('
+      + Object.keys(filters)
+        .filter(function(fil){return fil.enabled})
+        .sort(function(m,n){
+          return m.length == n.length ? m < n : m.length > n.length})
+        .map(function(fil){return fil.inword})
+        .map(escapeRegExp)
+        .join('|')
+      + ')','gi');
+  });
 }
 
 function caseMatchSpan(source,base,output) {

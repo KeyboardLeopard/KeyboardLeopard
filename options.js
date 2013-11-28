@@ -41,16 +41,16 @@ function addCurrentFilter(){
 
 function loadExistingFilters(){
   //TODO: sort filters before writing list
-  chrome.storage.sync.get('filters', function(savedFilters){
-    savedFilters.keys.forEach(function(key){
-      addFilter(savedFilters[key]);
+  chrome.storage.sync.get('filters', function(res){
+    Object.keys(res.filters).forEach(function(key){
+      addFilter(res.filters[key]);
     });
   });
 }
 
 loadExistingFilters();
 document.getElementById('save').addEventListener('click', function(){
-  chrome.storage.sync.set('filters',filters);
+  chrome.storage.sync.set({filters: filters});
 });
 document.getElementById('newfilter')
   .addEventListener('click', addCurrentFilter);
