@@ -19,9 +19,9 @@ function loadFilters(newFilters) {
       .sort(function(m,n){
         return m.length == n.length ? m < n : m.length > n.length})
       .map(function(k){
-        return filters[k].lwb ? '\\b' : ''
+        return (filters[k].lwb ? '\\b' : '')
           + escapeRegExp(k)
-          + filters[k].rwb ? '\\b' : '';
+          + (filters[k].rwb ? '\\b' : '');
         })
       .join('|')
     + ')','gi');
