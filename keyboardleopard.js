@@ -116,7 +116,8 @@ function changeTextNodes(node) {
   // ("ordinary" here means a node where text content doesn't have meaning
   //  beyond human text - <style> and <script> are the only nodes of this type
   //  that I know of)
-  } else if (node.nodeName != 'style' && node.nodeName != 'script') {
+  } else if (node.nodeName.toLowerCase() != 'style'
+    && node.nodeName.toLowerCase() != 'script') {
     childNodes = node.childNodes;
     length = childNodes.length;
     for(var i = 0; i < length; ++i){
