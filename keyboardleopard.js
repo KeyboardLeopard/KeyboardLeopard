@@ -11,19 +11,16 @@ function escapeRegExp(str) {
 var filters;
 var allFilterRegexp;
 
-function loadFilters(cb){
-  chrome.storage.sync.get('filters', function(res) {
-    filters = res.filters;
-    allFilterRegexp = new RegExp('('
-      + Object.keys(filters)
-        .filter(function(k){return filters[k].enabled})
-        .sort(function(m,n){
-          return m.length == n.length ? m < n : m.length > n.length})
-        .map(escapeRegExp)
-        .join('|')
-      + ')','gi');
-    cb && cb();
-  });
+function loadFilters(newFilters) {
+  filters = newFilters;
+  allFilterRegexp = new RegExp('('
+    + Object.keys(filters)
+      .filter(function(k){return filters[k].enabled})
+      .sort(function(m,n){
+        return m.length == n.length ? m < n : m.length > n.length})
+      .map(escapeRegExp)
+      .join('|')
+    + ')','gi');
 }
 
 function caseMatchSpan(source,base,output) {
@@ -139,9 +136,9 @@ function cdm_listener(event) {
   }
 }
 
-loadFilters(function(){
+function startReplacing() {
   changeTextNodes(document.body);
   document.title = performSubstitutions(document.title);
   document.body.addEventListener("DOMNodeInserted", insertion_listener, false);
   document.body.addEventListener("DOMCharacterDataModified", cdm_listener, false);
-});
+}
