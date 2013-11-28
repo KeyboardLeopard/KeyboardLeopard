@@ -17,6 +17,9 @@ function addFilter(fil){
   edButton.addEventListener('click', function () {
     document.getElementById('word-in').value = fil.inword;
     document.getElementById('word-out').value = fil.outword;
+    document.getElementById('lwb').checked = fil.lwb;
+    document.getElementById('rwb').checked = fil.rwb;
+    document.getElementById('strict').checked = fil.strict;
     deleteFilter();
   });
   li.appendChild(edButton);
