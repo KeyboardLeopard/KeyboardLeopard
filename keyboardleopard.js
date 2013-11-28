@@ -18,7 +18,11 @@ function loadFilters(newFilters) {
       .filter(function(k){return filters[k].enabled})
       .sort(function(m,n){
         return m.length == n.length ? m < n : m.length > n.length})
-      .map(escapeRegExp)
+      .map(function(k){
+        return filters[k].lwb ? '\\b' : ''
+          + escapeRegExp(k)
+          + filters[k].rwb ? '\\b' : '';
+        })
       .join('|')
     + ')','gi');
 }
@@ -42,10 +46,6 @@ function sliceOf(ars, i, parts) {
     Math.floor((i+1)/parts*ars.length));
 }
 
-// NOTE: This function takes in strings of "words", which is wrong.
-// It's supposed to apply for each word in the output, according to the nearest
-// word in the input.
-// That said, it's good enough right now.
 function caseMatchWords(source, base, output) {
   //special case the first letter
   var result = caseMatchSpan(source[0],base[0],output[0]);
@@ -54,7 +54,7 @@ function caseMatchWords(source, base, output) {
   var bRest = base.slice(1);
   var oRest = output.slice(1);
 
-  var parts = Math.min(bRest.length,oRest.length);
+  var parts = Math.min(bRest.length, oRest.length);
 
   for(var i = 0; i < parts; i++){
     result += caseMatchSpan(
@@ -69,22 +69,28 @@ function caseMatchWords(source, base, output) {
 function replacement(match) {
   var filter = filters[match.toLowerCase()];
 
-  var inWords = filter.inword.split(' ');
-  var outWords = filter.outword.split(' ');
-  var matchWords = match.split(' ');
+  // When filters require strict matches
+  if (filter.strict && match != filter.inword) {
+    // Ignore matches that don't strictly match
+    return match;
+  } else {
+    var inWords = filter.inword.split(' ');
+    var outWords = filter.outword.split(' ');
+    var matchWords = match.split(' ');
 
-  var replacementWords = [];
+    var replacementWords = [];
 
-  var parts = Math.min(inWords.length,outWords.length);
+    var parts = Math.min(inWords.length,outWords.length);
 
-  for(var i = 0; i < parts; i++){
-    replacementWords[i] = caseMatchWords(
-      sliceOf(matchWords, i, parts).join(' '),
-      sliceOf(inWords, i, parts).join(' '),
-      sliceOf(outWords, i, parts).join(' '));
+    for(var i = 0; i < parts; i++){
+      replacementWords[i] = caseMatchWords(
+        sliceOf(matchWords, i, parts).join(' '),
+        sliceOf(inWords, i, parts).join(' '),
+        sliceOf(outWords, i, parts).join(' '));
+    }
+
+    return replacementWords.join(' ');
   }
-
-  return replacementWords.join(' ');
 }
 
 function performSubstitutions(str) {
