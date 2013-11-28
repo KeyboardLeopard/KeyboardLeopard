@@ -14,7 +14,7 @@ function addFilter(fil){
   var edButton = document.createElement('button');
   edButton.type = 'button';
   edButton.textContent = 'Edit';
-  edButton.addEventListener('click',function(){
+  edButton.addEventListener('click', function () {
     document.getElementById('word-in').value = fil.inword;
     document.getElementById('word-out').value = fil.outword;
     deleteFilter();
@@ -33,10 +33,16 @@ function addFilter(fil){
 }
 
 function addCurrentFilter(){
-  //TODO: error checking (no empty words / replacements)
-  addFilter({
-    inword: document.getElementById('word-in').value,
-    outword: document.getElementById('word-out').value});
+  if (document.getElementById('word-in').value
+    && document.getElementById('word-out').value
+    && !filters[document.getElementById('word-in').value.toLowerCase()]) {
+    addFilter({
+      enabled: true,
+      inword: document.getElementById('word-in').value,
+      outword: document.getElementById('word-out').value});
+    document.getElementById('word-in').value = '';
+    document.getElementById('word-out').value = '';
+  }
 }
 
 function loadExistingFilters(){
@@ -49,8 +55,10 @@ function loadExistingFilters(){
 }
 
 loadExistingFilters();
+
 document.getElementById('save').addEventListener('click', function(){
   chrome.storage.sync.set({filters: filters});
 });
-document.getElementById('newfilter')
-  .addEventListener('click', addCurrentFilter);
+
+document.getElementById('newfilter').addEventListener(
+  'click', addCurrentFilter);
