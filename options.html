@@ -8,11 +8,18 @@
     <ul id="filters">
     </ul>
     <form>
-      <input id="word-in">
-      <input id="word-out">
-      <button id="newfilter" type="button">Add Filter</button>
+      <div>
+        <input id="word-in"> &rarr; <input id="word-out">
+      </div>
+      <div>
+        <input type="checkbox" checked id="lwb">Word boundaries<input type="checkbox" checked id="rwb">
+        <label>Strict matches only <input type="checkbox" id="strict"></label>
+      </div>
+      <div>
+        <button id="newfilter" type="button">Add Filter</button>
+      </div>
     </form>
-    <button id="save">Save</button>
+    <button id="save" type="button">Save</button>
     <script src="options.js"></script>
   </body>
 </html>

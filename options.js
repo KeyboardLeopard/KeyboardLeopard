@@ -39,7 +39,10 @@ function addCurrentFilter(){
     addFilter({
       enabled: true,
       inword: document.getElementById('word-in').value,
-      outword: document.getElementById('word-out').value});
+      outword: document.getElementById('word-out').value,
+      lwb: document.getElementById('lwb').checked,
+      rwb: document.getElementById('rwb').checked,
+      strict: document.getElementById('strict').checked});
     document.getElementById('word-in').value = '';
     document.getElementById('word-out').value = '';
   }
