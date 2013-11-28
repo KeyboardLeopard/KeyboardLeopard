@@ -16,10 +16,9 @@ function loadFilters(){
     filters = res.filters;
     allFilterRegexp = new RegExp('('
       + Object.keys(filters)
-        .filter(function(fil){return fil.enabled})
+        .filter(function(k){return filters[k].enabled})
         .sort(function(m,n){
           return m.length == n.length ? m < n : m.length > n.length})
-        .map(function(fil){return fil.inword})
         .map(escapeRegExp)
         .join('|')
       + ')','gi');
