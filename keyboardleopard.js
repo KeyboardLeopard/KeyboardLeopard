@@ -2,8 +2,6 @@
 // This work may be used freely as long as this notice is included.
 // The work is provided "as is" without warranty, express or implied.
 
-/* global chrome */
-
 function escapeRegExp(str) {
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
@@ -12,7 +10,7 @@ var filters;
 var allFilterRegexp;
 
 function loadFilters(newFilters) {
-  filters = newFilters;
+  filters = newFilters || {};
   allFilterRegexp = new RegExp('('
     + Object.keys(filters)
       .filter(function(k){return filters[k].enabled})

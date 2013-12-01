@@ -1,6 +1,8 @@
 /*global chrome*/
+
 var filters = {};
 var filterList = [];
+
 function addFilter(fil){
   var li = document.createElement('li');
   li.textContent = fil.inword + ' → ' + fil.outword + ' ';

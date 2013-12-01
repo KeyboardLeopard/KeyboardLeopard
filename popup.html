@@ -14,10 +14,12 @@
   </head>
   <body>
     <label><input type="checkbox" id="active"> Extension active</label>
-    <table id="toggles">
+    <table id="togtable">
+      <thead><tr><th>On?</th><th>Filter</th></tr></thead>
+      <tbody id="toggles"></tbody>
     </table>
     <p><button id="reload-button" type="button">Reload</button> for changes to take effect.</p>
-    <button id="optionslink" type="button">Go to options</button>
+    <p><button id="optionslink" type="button">Go to options</button> to edit filters.</p>
     <button id="ok-button" type="button">OK</button>
     <script src="popup.js"></script>
   </body>
