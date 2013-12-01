@@ -17,7 +17,8 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["keyboardleopard.js","crxklrun.js"]
+      "js": ["keyboardleopard.js","crxklrun.js"],
+      "all_frames": true
     }
   ],
 
