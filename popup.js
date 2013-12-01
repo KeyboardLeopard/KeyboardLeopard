@@ -20,14 +20,15 @@ document.getElementById('ok-button').addEventListener('click', dismissPopup);
 
 function populateToggles(filters) {
   var toggles = document.getElementById('toggles');
-  return filters
+  return Object.keys(filters)
     .sort(function(m,n){
-      return m.length == n.length ? m < n : m.length > n.length})
+      return m.length == n.length ? m < n : m.length < n.length})
     .forEach(function(k){
       var row = document.createElement('tr');
 
       var tog = document.createElement('input');
       tog.type = 'checkbox';
+      tog.checked = filters[k].enabled;
       tog.addEventListener('click', function(evt){
         filters[k].enabled = tog.checked;
         chrome.storage.sync.set({filters: filters});
@@ -46,4 +47,5 @@ function populateToggles(filters) {
 
 chrome.storage.sync.get({filters: {}, active: true}, function(res){
   document.getElementById('active').checked = res.active;
+  populateToggles(res.filters);
 });

@@ -15,7 +15,7 @@ function loadFilters(newFilters) {
     + Object.keys(filters)
       .filter(function(k){return filters[k].enabled})
       .sort(function(m,n){
-        return m.length == n.length ? m < n : m.length > n.length})
+        return m.length == n.length ? m < n : m.length < n.length})
       .map(function(k){
         return (filters[k].lwb ? '\\b' : '')
           + escapeRegExp(k)
