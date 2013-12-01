@@ -3,7 +3,7 @@
 
   "name": "KeyboardLeopard",
   "description": "This extension allows users to implement simple word filters.",
-  "version": "0.0.1",
+  "version": "0.9.0",
 
   "icons": { "16": "icon16.png",
              "48": "icon48.png",
