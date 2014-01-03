@@ -3,23 +3,40 @@
   <head>
     <meta charset="utf-8">
     <title>KeyboardLeopard Options</title>
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="kl-theme.css">
   </head>
   <body>
-    <ul id="filters">
-    </ul>
-    <form>
-      <div>
-        <input id="word-in"> &rarr; <input id="word-out">
+    <main class="container">
+      <h1>KeyboardLeopard Options</h1>
+      <hr>
+      <h2>Filters</h2>
+      <table id="filtable" class="table table-bordered">
+        <thead><tr><th>Enabled</th><th>Filter</th><th>Options</th></tr></thead>
+        <tbody id="filters"></tbody>
+      </table>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">New filter</h3>
+        </div>
+        <div class="panel-body">
+          <form>
+            <div class="form-group">
+              <input id="word-in"> &rarr; <input id="word-out">
+            </div>
+            <div class="form-group">
+              <input type="checkbox" checked id="lwb">Word boundaries<input type="checkbox" checked id="rwb">
+              <label>Strict matches only <input type="checkbox" id="strict"></label>
+            </div>
+            <div class="form-group">
+              <button id="newfilter" type="button" class="btn btn-primary">Add Filter</button>
+            </div>
+          </form>
+        </div>
       </div>
-      <div>
-        <input type="checkbox" checked id="lwb">Word boundaries<input type="checkbox" checked id="rwb">
-        <label>Strict matches only <input type="checkbox" id="strict"></label>
-      </div>
-      <div>
-        <button id="newfilter" type="button">Add Filter</button>
-      </div>
-    </form>
-    <button id="save" type="button">Save</button>
+      <hr>
+      <button id="save" type="button" class="btn btn-success">Save</button>
+    </main>
     <script src="options.js"></script>
   </body>
 </html>

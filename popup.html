@@ -6,21 +6,23 @@
     <style>
       body {
         min-width: 350px;
-      }
-      #ok-button {
-        width: 100%;
+        padding: 4px;
       }
     </style>
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="kl-theme.css">
   </head>
   <body>
-    <label><input type="checkbox" id="active"> Extension active</label>
-    <table id="togtable">
+    <div class="checkbox">
+      <label><input type="checkbox" id="active"> Extension active</label>
+    </div>
+    <table id="togtable" class="table table-bordered filter-toggles">
       <thead><tr><th>On?</th><th>Filter</th></tr></thead>
       <tbody id="toggles"></tbody>
     </table>
-    <p><button id="reload-button" type="button">Reload</button> for changes to take effect.</p>
-    <p><button id="optionslink" type="button">Go to options</button> to edit filters.</p>
-    <button id="ok-button" type="button">OK</button>
+    <p><button id="reload-button" type="button" class="btn btn-default btn-sm">Reload</button> for changes to take effect.</p>
+    <p><button id="optionslink" type="button" class="btn btn-default btn-sm">Go to options</button> to edit filters.</p>
+    <button id="ok-button" type="button" class="btn btn-primary btn-block">OK</button>
     <script src="popup.js"></script>
   </body>
 </html>

@@ -4,17 +4,33 @@ var filters = {};
 var filterList = [];
 
 function addFilter(fil){
-  var li = document.createElement('li');
-  li.textContent = fil.inword + ' → ' + fil.outword + ' ';
+  var row = document.createElement('tr');
+
+  var enCell = document.createElement('td');
+  var tog = document.createElement('input');
+  tog.type = 'checkbox';
+  tog.checked = fil.enabled;
+  tog.addEventListener('click', function(evt){
+    fil.enabled = tog.checked;
+  });
+  enCell.appendChild(tog);
+  row.appendChild(enCell);
+
+  var labelCell = document.createElement('td');
+  labelCell.textContent = fil.inword + ' → ' + fil.outword;
+  row.appendChild(labelCell);
 
   function deleteFilter(){
-    document.getElementById('filters').removeChild(li);
+    document.getElementById('filters').removeChild(row);
     filterList.splice(filterList.indexOf(fil),1);
     delete filters[fil.inword.toLowerCase()];
   }
 
+  var actionCell = document.createElement('td');
+
   var edButton = document.createElement('button');
   edButton.type = 'button';
+  edButton.className = 'btn btn-default btn-sm';
   edButton.textContent = 'Edit';
   edButton.addEventListener('click', function () {
     document.getElementById('word-in').value = fil.inword;
@@ -24,15 +40,22 @@ function addFilter(fil){
     document.getElementById('strict').checked = fil.strict;
     deleteFilter();
   });
-  li.appendChild(edButton);
+  actionCell.appendChild(edButton);
+
+  actionCell.appendChild(document.createTextNode(' '));
 
   var delButton = document.createElement('button');
   delButton.type = 'button';
+  delButton.className = 'btn btn-danger btn-sm';
   delButton.textContent = 'Delete';
   delButton.addEventListener('click',deleteFilter);
-  li.appendChild(delButton);
 
-  document.getElementById('filters').appendChild(li);
+  actionCell.appendChild(delButton);
+
+  row.appendChild(actionCell);
+
+  document.getElementById('filters').appendChild(row);
+
   filterList.push(fil);
   filters[fil.inword.toLowerCase()] = fil;
 }
@@ -53,12 +76,16 @@ function addCurrentFilter(){
   }
 }
 
+function populateFilters(filters) {
+  return Object.keys(filters).forEach(function(key){
+    addFilter(filters[key]);
+  });
+}
+
 function loadExistingFilters(){
   //TODO: sort filters before writing list
   chrome.storage.sync.get('filters', function(res){
-    Object.keys(res.filters).forEach(function(key){
-      addFilter(res.filters[key]);
-    });
+    populateFilters(res.filters);
   });
 }
 
